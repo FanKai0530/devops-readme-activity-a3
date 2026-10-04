@@ -1,0 +1,48 @@
+name: Update README activity
+
+on:
+  schedule:
+    - cron: '17 1 * * *'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: readme-activity
+  cancel-in-progress: false
+
+jobs:
+  update:
+    if: github.ref == format('refs/heads/{0}', github.event.repository.default_branch)
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - name: Verify secret is configured
+        env:
+          REPO_TOKEN: ${{ secrets.REPO_TOKEN }}
+        run: |
+          if [ -z "$REPO_TOKEN" ]; then
+            echo 'REPO_TOKEN is missing. Add a repository-scoped token with Contents read/write.' >&2
+            exit 1
+          fi
+      - name: Check out default branch
+        uses: actions/checkout@v7
+        with:
+          token: ${{ secrets.REPO_TOKEN }}
+          fetch-depth: 40
+      - name: Generate activity
+        env:
+          REPOSITORY: ${{ github.repository }}
+        run: python3 scripts/update_readme.py --repository "$REPOSITORY"
+      - name: Commit only if changed
+        run: |
+          if git diff --quiet -- README.md; then
+            echo 'No README change needed.'
+            exit 0
+          fi
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add README.md
+          git commit -m 'docs: update recent activity'
+          git push
