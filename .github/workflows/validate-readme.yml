@@ -1,0 +1,35 @@
+name: Validate README activity
+
+on:
+  pull_request:
+  push:
+    branches: [main]
+
+permissions:
+  contents: read
+
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 40
+          persist-credentials: false
+      - name: Validate markers
+        env:
+          REPOSITORY: ${{ github.repository }}
+        run: python3 scripts/update_readme.py --repository "$REPOSITORY" --check
+      - name: Run updater tests
+        run: python3 -m unittest discover -s tests -v
+      - name: Preview recent activity
+        env:
+          REPOSITORY: ${{ github.repository }}
+        run: |
+          {
+            echo '## Proposed README activity'
+            echo '```text'
+            python3 scripts/update_readme.py --repository "$REPOSITORY" --preview
+            echo '```'
+          } >> "$GITHUB_STEP_SUMMARY"
