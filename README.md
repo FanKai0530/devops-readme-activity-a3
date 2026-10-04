@@ -5,7 +5,10 @@ This repository shows a scheduled GitHub Actions workflow that publishes recent 
 ## Recent activity
 
 <!-- activity:start -->
-_The first workflow run will add recent commits here._
+- 2026-10-05 · [Merge pull request #2 from FanKai0530/1-automate-recent-activity-in-readme](https://github.com/FanKai0530/devops-readme-activity-a3/commit/8fea6e8aa1771934ff33a1c345988c65fd6eeb52) (`8fea6e8`)
+- 2026-10-05 · [ci: use current checkout action runtime](https://github.com/FanKai0530/devops-readme-activity-a3/commit/440de9736efbb27060f729af6ea397898aef9860) (`440de97`)
+- 2026-10-05 · [feat: automate README activity and validate PR previews](https://github.com/FanKai0530/devops-readme-activity-a3/commit/f7ac76dcd06faca02656e3be355e36d881778303) (`f7ac76d`)
+- 2026-10-05 · [docs: add README activity markers](https://github.com/FanKai0530/devops-readme-activity-a3/commit/a230650dfb683a5e60b4c9f36af588fb026429ec) (`a230650`)
 <!-- activity:end -->
 
 ## How it works
